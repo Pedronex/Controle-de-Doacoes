@@ -1,16 +1,28 @@
 package ads.pucgo.model;
 
+import ads.pucgo.util.Coluna;
+import ads.pucgo.util.Tabela;
+
 import java.util.Date;
 import java.util.List;
 
+@Tabela(nomeTabela = "doacao")
 public class Doacao {
+    @Coluna(nomeColuna = "ID")
     private Integer id;
+    @Coluna(nomeColuna = "CPF")
     private Integer cpf;
+    @Coluna(nomeColuna = "NOME_BENEFICIARIO")
     private String nomeBeneficiario;
-    private List<Beneficio> beneficios;
+    @Coluna(nomeColuna = "DADOS_BENEFICIO")
+    private String beneficios;
+    @Coluna(nomeColuna = "VALOR_DOADO")
     private Double valorDoado;
+    @Coluna(nomeColuna = "DATA_ENTRADA")
     private Date dataEntrada;
+    @Coluna(nomeColuna = "INSTITUICAO_DOADORA")
     private String instituicaoDoadora;
+    @Coluna(nomeColuna = "DATA_DOACAO")
     private Date dataDoacao;
 
     /**
@@ -60,7 +72,7 @@ public class Doacao {
      * Lista de todos os benefícios cedido para o beneficiario
      * @return lista do objeto benefício
      */
-    public List<Beneficio> getBeneficios() {
+    public String getBeneficios() {
         return beneficios;
     }
 
@@ -68,7 +80,7 @@ public class Doacao {
      * Armazenar a lista de benefícios recebidos para o beneficiario
      * @param beneficios Dados do beneficio doado
      */
-    public void setBeneficios(List<Beneficio> beneficios) {
+    public void setBeneficios(String beneficios) {
         this.beneficios = beneficios;
     }
 
