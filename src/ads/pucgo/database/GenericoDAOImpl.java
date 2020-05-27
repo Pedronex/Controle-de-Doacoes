@@ -74,12 +74,6 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         return mapResultSetInObject(resultSet);
     }
 
-    /**
-     * Passo de alteração de um objeto
-     * @param object objeto da classe T que será substituida
-     * @return resultado em objeto da execução SQL
-     * @throws BancoExcetion classe onde será tratado todas as exceções de banco de dados
-     */
     @Override
     public T alterar(T object) throws BancoExcetion {
         Statement statement = null;
@@ -110,12 +104,7 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         return mapResultSetInObject(resultSet);
     }
 
-    /**
-     * Método de consulta do banco de dados
-     * @param id identificador do objeto
-     * @return Execução do sql transformado em SQL
-     * @throws BancoExcetion classe onde será tratado todas as exceções de banco de dados
-     */
+
     @Override
     public T consultar(Integer id) throws BancoExcetion {
         Statement statement = null;
@@ -144,11 +133,6 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         return mapResultSetInObject(resultSet);
     }
 
-    /**
-     * Método de exclusão do objeto no banco de dados
-     * @param id identificador do objeto
-     * @throws BancoExcetion classe onde será tratado todas as exceções de banco de dados
-     */
     @Override
     public void excluir(Integer id) throws BancoExcetion {
         Statement statement = null;
@@ -174,11 +158,6 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         }
     }
 
-    /**
-     * Método de listagem de todos os objetos no banco de dados
-     * @return Resultado da excecução SQL em lista de objetos
-     * @throws BancoExcetion classe onde será tratado todas as exceções de banco de dados
-     */
     @Override
     public List<T> listar() throws BancoExcetion {
         List<T> list = new ArrayList<>();
@@ -221,19 +200,10 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         return list;
     }
 
-    /**
-     * Método de coleta do nome da tabela
-     * @return Nome da tabela setado no modelo
-     */
     private String getNomeTabela() {
         return oClass.getAnnotation(Tabela.class).nomeTabela();
     }
 
-    /**
-     * Método de criação do SQL para o Insert
-     * @param object Objeto que será alterado no banco
-     * @return Resultado da montagem do SQL
-     */
     private String criarInstrucaoInsert(T object) {
         StringBuilder sql = new StringBuilder();
         StringBuilder campos = new StringBuilder();
@@ -278,11 +248,6 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         return sql.toString();
     }
 
-    /**
-     * Método de criação do SQL para o Update
-     * @param object Objeto que será alterado no banco
-     * @return Resultado da montagem do SQL
-     */
     private String criarInstrucaoUpdate(T object) {
         StringBuilder sqlBuilder = new StringBuilder();
         try {
@@ -309,11 +274,6 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         return sqlBuilder.toString();
     }
 
-    /**
-     * Método para mapear o Resultado da execução em objeto
-     * @param resultSet Resultado da execução SQL
-     * @return Objeto retornado do {@link ResultSet}
-     */
     private T mapResultSetInObject(ResultSet resultSet) {
         T object = null;
         try {
@@ -340,11 +300,6 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         return object;
     }
 
-    /**
-     * Método para coletar o id do Objeto
-     * @param object Objeto ao ser enviado para o banco de dados
-     * @return Id do objeto
-     */
     private String getIdValue(T object) {
         StringBuilder sqlBuilder = new StringBuilder();
 
