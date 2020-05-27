@@ -49,4 +49,15 @@ public interface GenericoDAO<T,ID extends Serializable> {
      * @throws BancoExcetion classe onde será tratado todas as exceções de banco de dados
      */
     List<T> listar() throws BancoExcetion;
+
+    /**
+     * Método para setar a transação no banco de dados
+     * @param transacaoDB Transição do banco de dados
+     */
+    void setTransacaoDB(TransacaoDB transacaoDB);
+
+    /**
+     * @return Objeto de transação
+     */
+    TransacaoDB getTransacaoDB();
 }

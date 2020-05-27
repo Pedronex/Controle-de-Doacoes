@@ -36,7 +36,7 @@ public class TransacaoDB {
         }
     }
 
-    private void abrirTransacao(boolean apenasLer) throws BancoExcetion {
+    public void abrirTransacao(boolean apenasLer) throws BancoExcetion {
         try {
             if (conexao != null) {
                 conectar();
