@@ -17,6 +17,11 @@ public class TransacaoDB {
     String user = "root";
     String password = "123456";
 
+    /**
+     * Tentar realizar conexão com o banco de dados
+     *
+     * @throws BancoExcetion Classe que trata todas as exceções do banco de dados
+     */
     private void conectar() throws BancoExcetion {
         try {
             conexao = DriverManager.getConnection(host, user, password);
@@ -26,6 +31,11 @@ public class TransacaoDB {
         }
     }
 
+    /**
+     * Método para desconectar a aplicação do banco de dados
+     *
+     * @throws BancoExcetion Classe que trata todas as exceções do banco de dados
+     */
     private void disconectar() throws BancoExcetion {
         try {
             if (conexao != null && !conexao.isClosed()) {
@@ -36,15 +46,18 @@ public class TransacaoDB {
         }
     }
 
+    /**
+     * Método para abrir a transção com o banco de dados
+     *
+     * @param apenasLer verificar se a transação será apenas para ler ou não
+     * @throws BancoExcetion Classe que trata todas as exceções do banco de dados
+     */
     public void abrirTransacao(boolean apenasLer) throws BancoExcetion {
         try {
-            if (conexao != null) {
+            if (conexao == null) {
                 conectar();
-
                 conexao.setReadOnly(apenasLer);
-
             }
-
             if (conexao != null && !conexao.isClosed()) {
                 conexao.setAutoCommit(false);
             } else {
@@ -55,6 +68,11 @@ public class TransacaoDB {
         }
     }
 
+    /**
+     * Método para fechar transação com o banco de dados
+     *
+     * @throws BancoExcetion Classe que trata todas as exceções do banco de dados
+     */
     public void fecharTransacao() throws BancoExcetion {
         try {
             if (conexao != null && !conexao.isClosed()) {
@@ -67,6 +85,11 @@ public class TransacaoDB {
         }
     }
 
+    /**
+     * Método para criar o statement para realizar as declarações
+     * @return o statement para realizar as requisições
+     * @throws BancoExcetion Classe que trata todas as exceções do banco de dados
+     */
     public Statement createStatement() throws BancoExcetion {
         try {
             if (conexao != null && !conexao.isClosed()) {
@@ -76,6 +99,5 @@ public class TransacaoDB {
         } catch (SQLException e) {
             throw new BancoExcetion(e);
         }
-
     }
 }

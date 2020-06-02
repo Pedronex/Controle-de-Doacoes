@@ -1,0 +1,28 @@
+#text-field{
+    -fx-text-fill: #ffffffe5;
+    -fx-prompt-text-fill: #ffffffe5;
+}
+
+#tool-button{
+    -fx-background-color: #2c3030;
+    -fx-text-fill: #ffffff;
+}
+
+#tool-button:hover{
+    -fx-background-color: #3a4040;
+}
+
+#date-picker{
+
+}
+#nav-bar{
+    -fx-border-color: #ec5353;
+    -fx-border-width: 0 0 5 0;
+}
+
+#nav-bar .button{
+    -fx-background-color: #1d0c0c;
+}
+#nav-bar .button:hover{
+    -fx-background-color: #391616;
+}

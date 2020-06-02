@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="510.0" prefWidth="988.0" style="-fx-background-color: #262628;" xmlns="http://javafx.com/javafx/10.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ads.pucgo.view.controllers.NovaDoacaoController">
+   <VBox layoutX="206.0" layoutY="76.0" prefHeight="358.0" prefWidth="577.0" style="-fx-background-color: #ffffff28; -fx-background-radius: 25; -fx-border-width: 3; -fx-border-radius: 25; -fx-border-color: #ff5656aa;">
+      <AnchorPane prefHeight="219.0" prefWidth="574.0">
+         <VBox layoutX="-3.0" layoutY="21.0" prefHeight="275.0" prefWidth="577.0">
+            <HBox>
+               <opaqueInsets>
+                  <Insets bottom="48.0" />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin>
+               <Label alignment="CENTER_RIGHT" prefWidth="182.0" text="CPF do beneficiario:" textFill="#ffffffe5">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets left="15.0" right="5.0" />
+                  </HBox.margin>
+               </Label>
+               <JFXTextField id="text-field" fx:id="inpCPF" focusColor="#adadad" labelFloat="true" prefHeight="26.0" prefWidth="360.0" promptText="Digite o nome do Beneficiario" stylesheets="@../../resources/styles/style.css" unFocusColor="#727272" viewOrder="1.0">
+                  <font>
+                     <Font name="Segoe UI" size="12.0" />
+                  </font>
+                  <effect>
+                     <ColorAdjust brightness="1.0" />
+                  </effect>
+               </JFXTextField>
+            </HBox>
+            <HBox prefHeight="28.0" prefWidth="542.0">
+               <opaqueInsets>
+                  <Insets bottom="48.0" />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin>
+               <Label alignment="CENTER_RIGHT" stylesheets="@../../resources/styles/style.css" text="Nome do Beneficiario:" textFill="#ffffffe5">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets left="15.0" right="5.0" />
+                  </HBox.margin>
+               </Label>
+               <JFXTextField id="text-field" fx:id="inpNomeBeneficiario" focusColor="#adadad" labelFloat="true" prefHeight="26.0" prefWidth="360.0" promptText="Digite o nome do Beneficiario" stylesheets="@../../resources/styles/style.css" unFocusColor="#727272" viewOrder="1.0">
+                  <font>
+                     <Font name="Segoe UI" size="12.0" />
+                  </font>
+                  <effect>
+                     <ColorAdjust brightness="1.0" />
+                  </effect>
+               </JFXTextField>
+            </HBox>
+            <HBox prefHeight="29.0" prefWidth="542.0">
+               <opaqueInsets>
+                  <Insets bottom="48.0" />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin>
+               <Label alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="182.0" stylesheets="@../../resources/styles/style.css" text="Data da Doação:" textFill="#ffffffe5">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets left="15.0" right="5.0" />
+                  </HBox.margin>
+               </Label>
+               <JFXDatePicker id="text-field" fx:id="inpDataDoacao" defaultColor="#ff7070" editable="false" prefHeight="29.0" prefWidth="360.0" promptText="Digite a data da doação" stylesheets="@../../resources/styles/style.css">
+                  <effect>
+                     <ColorAdjust brightness="1.0" saturation="0.17" />
+                  </effect>
+               </JFXDatePicker>
+            </HBox>
+            <HBox>
+               <opaqueInsets>
+                  <Insets bottom="48.0" />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin>
+               <Label alignment="CENTER_RIGHT" prefWidth="182.0" stylesheets="@../../resources/styles/style.css" text="Instituição doadora:" textFill="#ffffffe5">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets left="15.0" right="5.0" />
+                  </HBox.margin>
+               </Label>
+               <JFXTextField id="text-field" fx:id="inpInstituicao" focusColor="#adadad" labelFloat="true" prefHeight="26.0" prefWidth="360.0" promptText="Digite o nome da instituição doadora" stylesheets="@../../resources/styles/style.css" unFocusColor="#727272" viewOrder="1.0">
+                  <font>
+                     <Font name="Segoe UI" size="12.0" />
+                  </font>
+                  <effect>
+                     <ColorAdjust brightness="1.0" />
+                  </effect>
+               </JFXTextField>
+            </HBox>
+            <HBox>
+               <opaqueInsets>
+                  <Insets bottom="48.0" />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin>
+               <Label alignment="CENTER_RIGHT" prefWidth="182.0" stylesheets="@../../resources/styles/style.css" text="Valor doado:" textFill="#ffffffe5">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets left="15.0" right="5.0" />
+                  </HBox.margin>
+               </Label>
+               <JFXTextField id="text-field" fx:id="inpValorDoado" focusColor="#adadad" labelFloat="true" prefHeight="26.0" prefWidth="360.0" promptText="Digite o valor doado" stylesheets="@../../resources/styles/style.css" unFocusColor="#727272" viewOrder="1.0">
+                  <font>
+                     <Font name="Segoe UI" size="12.0" />
+                  </font>
+                  <effect>
+                     <ColorAdjust brightness="1.0" />
+                  </effect>
+               </JFXTextField>
+            </HBox>
+         </VBox>
+      </AnchorPane>
+      <HBox alignment="CENTER" prefHeight="46.0" prefWidth="574.0">
+         <JFXButton id="tool-button" fx:id="btnCancelar" stylesheets="@../../resources/styles/style.css" text="Cancelar">
+            <HBox.margin>
+               <Insets right="141.0" />
+            </HBox.margin>
+         </JFXButton>
+         <JFXButton id="tool-button" fx:id="btnProximo" stylesheets="@../../resources/styles/style.css" text="Gravar" />
+         <opaqueInsets>
+            <Insets bottom="48.0" />
+         </opaqueInsets>
+         <effect>
+            <ColorAdjust />
+         </effect>
+      </HBox>
+   </VBox>
+   <Label layoutX="298.0" layoutY="14.0" text="Cadastro de Doação" textFill="#ffffffe4">
+      <font>
+         <Font size="44.0" />
+      </font>
+   </Label>
+</AnchorPane>

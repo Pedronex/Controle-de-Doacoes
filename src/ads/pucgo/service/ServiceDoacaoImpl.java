@@ -111,16 +111,16 @@ public class ServiceDoacaoImpl implements ServiceDoacao{
     @Override
     public List<Doacao> listar() throws DoacaoException {
         dao = new DoacaoDAOImpl();
-        List<Doacao> objeto;
+        List<Doacao> objetos;
         getDao().setTransacaoDB(new TransacaoDB());
 
         try {
             getDao().getTransacaoDB().abrirTransacao(false);
-            objeto = getDao().listar();
+            objetos = getDao().listar();
             getDao().getTransacaoDB().fecharTransacao();
         } catch (BancoExcetion bancoExcetion) {
             throw new DoacaoException(bancoExcetion);
         }
-        return objeto;
+        return objetos;
     }
 }

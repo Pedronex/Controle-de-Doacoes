@@ -14,7 +14,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<T, ID> {
@@ -42,24 +41,21 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
 
     /**
      * Inclui um objeto T no banco de dados
-     * @param object objeto da classe T que será substituida
-     * @return objeto incluido
+     * @param object Objeto da classe T que será substituida
+     * @return Objeto incluido
      * @throws BancoExcetion classe onde será tratado todas as exceções de banco de dados
      */
     @Override
     public T incluir(T object) throws BancoExcetion {
         Statement statement = null;
-        ResultSet resultSet;
         StringBuilder sqlBuilder = new StringBuilder();
 
-        sqlBuilder.append("INSERT INTO");
+        sqlBuilder.append("INSERT INTO ");
         sqlBuilder.append(getNomeTabela());
         sqlBuilder.append(criarInstrucaoInsert(object));
-        logger.log(Level.INFO, sqlBuilder.toString());
         try {
             statement = transacaoDB.createStatement();
             statement.executeQuery(sqlBuilder.toString());
-            resultSet = statement.getResultSet();
         } catch (Exception e) {
             throw new BancoExcetion(e);
         } finally {
@@ -71,9 +67,15 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
                 }
             }
         }
-        return mapResultSetInObject(resultSet);
+        return object;
     }
 
+    /**
+     * Alterar um objeto T no banco de dados
+     * @param object Objeto da classe T que será substituida
+     * @return O objeto alterado
+     * @throws BancoExcetion Classe onde será tratado todas as exceções de banco de dados
+     */
     @Override
     public T alterar(T object) throws BancoExcetion {
         Statement statement = null;
@@ -104,11 +106,17 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         return mapResultSetInObject(resultSet);
     }
 
-
+    /**
+     * Consultar um item no banco de dados com base no identificador
+     * @param id identificador do objeto
+     * @return O objeto procurado
+     * @throws BancoExcetion Classe que trata todas as exceções do banco de dados
+     */
     @Override
     public T consultar(Integer id) throws BancoExcetion {
         Statement statement = null;
-        ResultSet resultSet;
+        ResultSet resultSet = null;
+        T object;
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("SELECT * FROM ");
         sqlBuilder.append(getNomeTabela());
@@ -119,6 +127,8 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
             statement = transacaoDB.createStatement();
             statement.execute(sqlBuilder.toString());
             resultSet = statement.getResultSet();
+            resultSet.next();
+            object = mapResultSetInObject(resultSet);
         } catch (Exception e) {
             throw new BancoExcetion(e);
         } finally {
@@ -129,10 +139,22 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
                     throwables.printStackTrace();
                 }
             }
+            if (resultSet != null){
+                try {
+                    resultSet.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
-        return mapResultSetInObject(resultSet);
+        return object;
     }
 
+    /**
+     * Método de exclusão do objeto no banco de dados
+     * @param id identificador do objeto
+     * @throws BancoExcetion Classe que trata todas as exceções do banco de dados
+     */
     @Override
     public void excluir(Integer id) throws BancoExcetion {
         Statement statement = null;
@@ -158,6 +180,11 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         }
     }
 
+    /**
+     * Método de listagem de todos os objetos que estão presentes no bando de dados
+     * @return Lista de objetos T
+     * @throws BancoExcetion Classe que trata todas as exceções do banco de dados
+     */
     @Override
     public List<T> listar() throws BancoExcetion {
         List<T> list = new ArrayList<>();
@@ -167,7 +194,7 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
 
         StringBuilder sqlBuilder = new StringBuilder();
 
-        sqlBuilder.append("SELECT * FROM");
+        sqlBuilder.append("SELECT * FROM ");
         sqlBuilder.append(getNomeTabela());
         sqlBuilder.append(" ORDER BY 1 ");
         try {
@@ -200,10 +227,19 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         return list;
     }
 
+    /**
+     * Coletar o nome da tabela no banco de dados
+     * @return Nome da tabela
+     */
     private String getNomeTabela() {
         return oClass.getAnnotation(Tabela.class).nomeTabela();
     }
 
+    /**
+     * Método de criação da instrução de inserção no banco de dados
+     * @param object objeto que será inserido
+     * @return String com a instrução
+     */
     private String criarInstrucaoInsert(T object) {
         StringBuilder sql = new StringBuilder();
         StringBuilder campos = new StringBuilder();
@@ -248,6 +284,11 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         return sql.toString();
     }
 
+    /**
+     * Método de atualização da instrução de inserção no banco de dados
+     * @param object objeto que será atualizado
+     * @return String com a instrução
+     */
     private String criarInstrucaoUpdate(T object) {
         StringBuilder sqlBuilder = new StringBuilder();
         try {
@@ -274,32 +315,37 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         return sqlBuilder.toString();
     }
 
+    /**
+     * Mapear resultSet em objeto
+     * @param resultSet resultado da requisição no banco de dados
+     * @return Objeto presente no resultado da requisição
+     */
     private T mapResultSetInObject(ResultSet resultSet) {
         T object = null;
         try {
             object = oClass.getConstructor().newInstance();
-        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        try {
             for (Field field : oClass.getDeclaredFields()) {
                 field.setAccessible(true);
-
                 Coluna coluna = field.getAnnotation(Coluna.class);
                 Object value = resultSet.getObject(coluna.nomeColuna());
                 Class<?> type = field.getType();
-
                 if (isPrimitive(type)) {
                     Class<?> boxed = mapPrimitiveClass(type);
+                    value = boxed.cast(value);
                 }
+                field.set(object,value);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalAccessException | NoSuchMethodException | InstantiationException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return object;
     }
 
+    /**
+     * Método para coleta do identificador do objeto
+     * @param object Objeto
+     * @return O valor do identificador em String
+     */
     private String getIdValue(T object) {
         StringBuilder sqlBuilder = new StringBuilder();
 
@@ -314,17 +360,32 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         return sqlBuilder.toString();
     }
 
+    /**
+     * Método para validar se o valor é primitivo
+     * @param type tipo do campo
+     * @return verdadeiro caso o tipo seja primitivo
+     */
     private boolean isPrimitive(Class<?> type) {
         return (type == int.class || type == long.class || type == double.class || type == float.class
                 || type == boolean.class || type == byte.class || type == char.class || type == short.class
                 || type == Date.class);
     }
 
+    /**
+     * Método para validar se o valor deve conter aspas na requisição SQL
+     * @param type tipo do campo
+     * @return verdadeiro caso seja necessario usar aspas
+     */
     private boolean isContemAspas(Class<?> type) {
         return type != int.class && type != long.class && type != double.class && type != float.class && type != Date.class
                 && type != Integer.class && type != Long.class && type != Double.class && type != Float.class;
     }
 
+    /**
+     * Método para mapear a classe primitiva
+     * @param type tipo do campo
+     * @return Tipo do campo em objeto
+     */
     private Class<?> mapPrimitiveClass(Class<?> type) {
         if (int.class.equals(type)) {
             return Integer.class;
