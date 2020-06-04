@@ -12,57 +12,96 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 import java.net.URL;
 import java.sql.Date;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
-public class NovaDoacaoController implements Initializable {
-
+public class AlterarDoacaoController implements Initializable {
     @FXML
-    private JFXTextField inpCPF;
-
+    public TableView<DoacaoBean> tabelaDoacao;
     @FXML
-    private JFXTextField inpNomeBeneficiario;
-
+    public TableColumn<DoacaoBean, String> clCpf;
     @FXML
-    private JFXDatePicker inpDataDoacao;
-
+    public TableColumn<DoacaoBean, String> clBeneficiario;
     @FXML
-    private JFXTextField inpInstituicao;
-
+    public TableColumn<DoacaoBean, String> clInstituicao;
     @FXML
-    private JFXTextField inpValorDoado;
-
+    public TableColumn<DoacaoBean, String> clValorDoado;
     @FXML
-    private JFXButton btnCancelar;
-
+    public TableColumn<DoacaoBean, String> clDataDoacao;
     @FXML
-    private JFXButton btnProximo;
+    public JFXTextField inpId;
+    @FXML
+    public JFXTextField inpCpf;
+    @FXML
+    public JFXTextField inpNome;
+    @FXML
+    public JFXTextField inpInstituicao;
+    @FXML
+    public JFXButton btnCancelar;
+    @FXML
+    public JFXButton btnAtualizar;
+    @FXML
+    public JFXTextField inpValorDoado;
+    @FXML
+    public JFXDatePicker inpDataBaixa;
+    @FXML
+    public JFXDatePicker inpDataDoacao;
 
+    ServiceDoacao service = new ServiceDoacaoImpl();
+    Doacao doacao;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        MetodosGenericos.carregarTabela(tabelaDoacao,clCpf,clBeneficiario,clInstituicao,clValorDoado,clDataDoacao);
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
+        numberFormat.setMinimumFractionDigits(2);
+        configuracaoTabela();
         configurarCampos();
-
-        btnCancelar.setOnAction(event -> MetodosGenericos.fechar(btnCancelar,getClass()));
-
-        btnProximo.setOnAction(event -> {
+        btnAtualizar.setOnAction(event -> {
             try {
-                DoacaoBean bean = setBean();
-                gravarDoacao(bean);
+                atualizarDoacao(setBean());
+                service.alterar(doacao);
+                MetodosGenericos.carregarTabela(tabelaDoacao,clCpf,clBeneficiario,clInstituicao,clValorDoado,clDataDoacao);
             } catch (DoacaoException e) {
                 e.printStackTrace();
             }
         });
+
+        btnCancelar.setOnAction(event -> MetodosGenericos.fechar(btnCancelar,getClass()));
     }
 
-    private void gravarDoacao(DoacaoBean bean) throws DoacaoException {
-        ServiceDoacao service = new ServiceDoacaoImpl();
+    private void configuracaoTabela(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Doacao doacao = new Doacao();
+        tabelaDoacao.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                try {
+                    doacao = service.consultar(newValue.getId());
+                    inpCpf.setText(doacao.getCpf());
+                    inpDataBaixa.getEditor().setText(sdf.format(doacao.getDataEntrada()));
+                    inpDataDoacao.getEditor().setText(sdf.format(doacao.getDataDoacao()));
+                    inpId.setText(doacao.getId().toString());
+                    inpNome.setText(doacao.getNomeBeneficiario());
+                    inpInstituicao.setText(doacao.getInstituicaoDoadora());
+                    inpValorDoado.setText(doacao.getValorDoado().toString());
+                } catch (DoacaoException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void atualizarDoacao(DoacaoBean bean) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        doacao = new Doacao();
         String valorDoado = bean.getValorDoacao().replace(",", ".");
+
+        doacao.setId(bean.getId());
 
         try {
             doacao.setDataDoacao(new Date(sdf.parse(bean.getDataDoacao()).getTime()));
@@ -75,13 +114,13 @@ public class NovaDoacaoController implements Initializable {
         doacao.setDataEntrada(new Date(System.currentTimeMillis()));
         doacao.setInstituicaoDoadora(bean.getInstituicaoDoadora());
         doacao.setNomeBeneficiario(bean.getNomeBeneficiario());
-        service.criar(doacao);
     }
 
     private DoacaoBean setBean() throws DoacaoException {
         DoacaoBean bean = new DoacaoBean();
-        bean.setCpfBeneficiario(inpCPF.getText());
-        bean.setNomeBeneficiario(inpNomeBeneficiario.getText());
+        bean.setId(Integer.parseInt(inpId.getText()));
+        bean.setCpfBeneficiario(inpCpf.getText());
+        bean.setNomeBeneficiario(inpNome.getText());
         bean.setDataDoacao(inpDataDoacao.getEditor().getText());
         bean.setInstituicaoDoadora(inpInstituicao.getText());
         bean.setValorDoacao(inpValorDoado.getText());
@@ -97,8 +136,6 @@ public class NovaDoacaoController implements Initializable {
             throw new DoacaoException("O campo Instituição doadora não pode estar vazio!", "O tamanho maximo é 50 caracteres");
         if (bean.getValorDoacao().isEmpty())
             bean.setValorDoacao("0");
-
-        inpValorDoado.setText("0");
         // Validações de valores
         if (!bean.getDataDoacao().matches("[0-3][0-9]/[0-1][0-9]/[0-9]+"))
             throw new DoacaoException("O campo data não entra no formato", "A data não está no formato **/**/****");
@@ -110,8 +147,8 @@ public class NovaDoacaoController implements Initializable {
         formatador.setMascara("###.###.###-##");
         formatador.setCaracteresValidos("0123456789");
         // Ultilizando mascara
-        inpCPF.setOnKeyReleased(event -> {
-            formatador.setTexto(inpCPF);
+        inpCpf.setOnKeyReleased(event -> {
+            formatador.setTexto(inpCpf);
             try {
                 formatador.formatar();
             } catch (DoacaoException e) {
@@ -119,8 +156,8 @@ public class NovaDoacaoController implements Initializable {
             }
         });
 
-        inpNomeBeneficiario.textProperty().addListener((observable, oldValue, newValue) ->
-                validarNome(inpNomeBeneficiario, oldValue, newValue));
+        inpNome.textProperty().addListener((observable, oldValue, newValue) ->
+                validarNome(inpNome, oldValue, newValue));
 
         inpInstituicao.textProperty().addListener((observable, oldValue, newValue) ->
                 validarNome(inpInstituicao, oldValue, newValue));
@@ -128,8 +165,8 @@ public class NovaDoacaoController implements Initializable {
         inpValorDoado.textProperty().addListener((observable, oldValue, newValue) ->
                 validarValor(inpValorDoado, oldValue, newValue));
 
-        inpCPF.textProperty().addListener((observable, oldValue, newValue) ->
-                validarCPF(inpCPF, oldValue, newValue));
+        inpCpf.textProperty().addListener((observable, oldValue, newValue) ->
+                validarCPF(inpCpf, oldValue, newValue));
     }
 
     private void validarNome(JFXTextField field, String oldValue, String newValue) {

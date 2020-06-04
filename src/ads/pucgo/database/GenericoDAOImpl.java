@@ -14,10 +14,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<T, ID> {
-    Logger logger;
     private final Class<T> oClass;
     protected TransacaoDB transacaoDB;
 
@@ -79,19 +77,18 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
     @Override
     public T alterar(T object) throws BancoExcetion {
         Statement statement = null;
-        ResultSet resultSet;
         StringBuilder sqlBuilder = new StringBuilder();
 
-        sqlBuilder.append("UPDATE");
+        sqlBuilder.append("UPDATE ");
         sqlBuilder.append(getNomeTabela());
         sqlBuilder.append(" SET ");
         sqlBuilder.append(criarInstrucaoUpdate(object));
+        sqlBuilder.append(" WHERE ID= ");
         sqlBuilder.append(getIdValue(object));
 
         try {
             statement = transacaoDB.createStatement();
             statement.execute(sqlBuilder.toString());
-            resultSet = statement.getResultSet();
         } catch (Exception e) {
             throw new BancoExcetion(e);
         } finally {
@@ -103,7 +100,7 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
                 }
             }
         }
-        return mapResultSetInObject(resultSet);
+        return object;
     }
 
     /**
@@ -161,7 +158,7 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("DELETE FROM ");
         sqlBuilder.append(getNomeTabela());
-        sqlBuilder.append("WHERE ID = ");
+        sqlBuilder.append(" WHERE ID = ");
         sqlBuilder.append(id);
 
         try {
@@ -295,19 +292,18 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
             for (Field field : object.getClass().getDeclaredFields()) {
                 field.setAccessible(true);
                 Coluna coluna = field.getAnnotation(Coluna.class);
-
-                if (sqlBuilder.length() > 1) {
-                    sqlBuilder.append(", ");
-                }
-                sqlBuilder.append(coluna.nomeColuna());
-                sqlBuilder.append(" = ");
-                if (isContemAspas(field.getType())) {
-                    sqlBuilder.append("'");
-                    sqlBuilder.append(field.get(object));
-                    sqlBuilder.append("'");
-                } else {
-                    sqlBuilder.append(field.get(object));
-                }
+                    if (sqlBuilder.length() > 1) {
+                        sqlBuilder.append(", ");
+                    }
+                    sqlBuilder.append(coluna.nomeColuna());
+                    sqlBuilder.append("=");
+                    if (isContemAspas(field.getType())) {
+                        sqlBuilder.append("'");
+                        sqlBuilder.append(field.get(object));
+                        sqlBuilder.append("'");
+                    } else {
+                        sqlBuilder.append(field.get(object));
+                    }
             }
         } catch (Exception e) {
             e.printStackTrace();

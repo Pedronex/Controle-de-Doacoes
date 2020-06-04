@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
@@ -13,9 +12,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class PrincipalController implements Initializable {
-
-    @FXML
-    private AnchorPane anchorPane;
 
     @FXML
     private JFXButton btnCriar;
@@ -50,6 +46,14 @@ public class PrincipalController implements Initializable {
         btnConsultar.setOnAction(event -> {
             try {
                 chamarTela("consultarDoacao");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        btnAtualizar.setOnAction(event -> {
+            try {
+                chamarTela("alterarDoacao");
             } catch (IOException e) {
                 e.printStackTrace();
             }
