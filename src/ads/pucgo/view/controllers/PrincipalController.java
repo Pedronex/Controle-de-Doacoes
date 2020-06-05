@@ -58,6 +58,14 @@ public class PrincipalController implements Initializable {
                 e.printStackTrace();
             }
         });
+
+        btnExcluir.setOnAction(event -> {
+            try {
+                chamarTela("deletarDoacao");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void chamarTela(String nomeTela) throws IOException {

@@ -32,80 +32,71 @@
           <Font size="24.0" />
         </font>
     </Label>
-    <GridPane layoutX="37.0" layoutY="107.0" prefHeight="297.0" prefWidth="383.0">
+    <GridPane layoutX="36.0" layoutY="65.0" prefHeight="380.0" prefWidth="383.0">
         <columnConstraints>
-            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="190.0" minWidth="10.0" prefWidth="190.0"/>
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="222.0" minWidth="10.0"
-                               prefWidth="193.0"/>
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="190.0" minWidth="10.0" prefWidth="190.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="222.0" minWidth="10.0" prefWidth="193.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
         <Label text="Identificador:" textFill="WHITE">
            <font>
-               <Font size="18.0"/>
+               <Font size="18.0" />
            </font>
         </Label>
         <Label text="CPF do Beneficiario: " textFill="WHITE" GridPane.rowIndex="1">
            <font>
-               <Font size="18.0"/>
+               <Font size="18.0" />
            </font>
         </Label>
         <Label text="Nome do beneficiario:" textFill="WHITE" GridPane.rowIndex="2">
            <font>
-               <Font size="18.0"/>
+               <Font size="18.0" />
            </font>
         </Label>
         <Label text="Data da entrada:" textFill="WHITE" GridPane.rowIndex="3">
            <font>
-               <Font size="18.0"/>
+               <Font size="18.0" />
            </font>
         </Label>
         <Label text="Instituição Doadora:" textFill="WHITE" GridPane.rowIndex="4">
            <font>
-               <Font size="18.0"/>
+               <Font size="18.0" />
            </font>
         </Label>
         <Label text="Data da doação:" textFill="WHITE" GridPane.rowIndex="5">
            <font>
-               <Font size="18.0"/>
+               <Font size="18.0" />
            </font>
         </Label>
-        <JFXTextField id="text-field" fx:id="inpId" disable="true" editable="false" focusColor="#adadad"
-                      prefHeight="26.0" prefWidth="205.0" GridPane.columnIndex="1"/>
-        <JFXTextField id="text-field" fx:id="inpCpf" focusColor="#adadad" GridPane.columnIndex="1"
-                      GridPane.rowIndex="1"/>
-        <JFXTextField id="text-field" fx:id="inpNome" focusColor="#adadad" GridPane.columnIndex="1"
-                      GridPane.rowIndex="2"/>
-        <JFXTextField id="text-field" fx:id="inpInstituicao" focusColor="#adadad" GridPane.columnIndex="1"
-                      GridPane.rowIndex="4"/>
-        <JFXButton id="tool-button" fx:id="btnCancelar" text="Cancelar" GridPane.halignment="CENTER"
-                   GridPane.rowIndex="7"/>
-        <JFXButton id="tool-button" fx:id="btnAtualizar" text="Atualizar" GridPane.columnIndex="1"
-                   GridPane.rowIndex="7"/>
+        <JFXTextField id="text-field" fx:id="inpId" disable="true" editable="false" focusColor="#adadad" prefHeight="26.0" prefWidth="205.0" GridPane.columnIndex="1" />
+        <JFXTextField id="text-field" fx:id="inpCpf" focusColor="#adadad" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <JFXTextField id="text-field" fx:id="inpNome" focusColor="#adadad" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <JFXTextField id="text-field" fx:id="inpInstituicao" focusColor="#adadad" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <JFXButton id="tool-button" fx:id="btnCancelar" text="Cancelar" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+        <JFXButton id="tool-button" fx:id="btnAtualizar" text="Atualizar" GridPane.columnIndex="1" GridPane.rowIndex="7" />
         <Label text="Valor doado:" textFill="WHITE" GridPane.rowIndex="6">
            <font>
-               <Font size="18.0"/>
+               <Font size="18.0" />
            </font>
         </Label>
-        <JFXTextField id="text-field" fx:id="inpValorDoado" focusColor="#adadad" GridPane.columnIndex="1"
-                      GridPane.rowIndex="6"/>
-        <JFXDatePicker id="date-picker" fx:id="inpDataBaixa" disable="true" editable="false" GridPane.columnIndex="1"
-                       GridPane.rowIndex="3">
+        <JFXTextField id="text-field" fx:id="inpValorDoado" focusColor="#adadad" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+        <JFXDatePicker id="date-picker" fx:id="inpDataBaixa" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
            <effect>
-               <ColorAdjust brightness="0.88"/>
+               <ColorAdjust brightness="0.88" />
            </effect>
         </JFXDatePicker>
         <JFXDatePicker fx:id="inpDataDoacao" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
            <effect>
-               <ColorAdjust brightness="0.88"/>
+               <ColorAdjust brightness="0.88" />
            </effect>
         </JFXDatePicker>
     </GridPane>

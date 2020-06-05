@@ -16,9 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 import java.net.URL;
-import java.sql.Date;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
@@ -73,7 +71,8 @@ public class AlterarDoacaoController implements Initializable {
             }
         });
 
-        btnCancelar.setOnAction(event -> MetodosGenericos.fechar(btnCancelar,getClass()));
+        btnCancelar.setOnAction(event ->
+                MetodosGenericos.fechar(btnCancelar,getClass().getResource("../layouts/telaInicial.fxml")));
     }
 
     private void configuracaoTabela(){
@@ -103,17 +102,7 @@ public class AlterarDoacaoController implements Initializable {
 
         doacao.setId(bean.getId());
 
-        try {
-            doacao.setDataDoacao(new Date(sdf.parse(bean.getDataDoacao()).getTime()));
-            doacao.setValorDoado(Double.parseDouble(valorDoado));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        doacao.setCpf(bean.getCpfBeneficiario());
-        doacao.setDataEntrada(new Date(System.currentTimeMillis()));
-        doacao.setInstituicaoDoadora(bean.getInstituicaoDoadora());
-        doacao.setNomeBeneficiario(bean.getNomeBeneficiario());
+        MetodosGenericos.mapearDoacao(bean, doacao, valorDoado, sdf);
     }
 
     private DoacaoBean setBean() throws DoacaoException {

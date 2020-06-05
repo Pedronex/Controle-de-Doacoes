@@ -15,10 +15,16 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
+import java.net.URL;
+import java.sql.Date;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class MetodosGenericos {
+public final class MetodosGenericos {
+    private MetodosGenericos(){
+
+    }
 
     public static void carregarTabela(TableView<DoacaoBean> tabelaDoacao, TableColumn<DoacaoBean, String> clCpf, TableColumn<DoacaoBean, String> clBeneficiario, TableColumn<DoacaoBean, String> clInstituicao, TableColumn<DoacaoBean, String> clValorDoado, TableColumn<DoacaoBean, String> clDataDoacao){
         ServiceDoacao service = new ServiceDoacaoImpl();
@@ -51,15 +57,29 @@ public class MetodosGenericos {
         }
     }
 
-    public static void fechar(JFXButton btn, Object classe){
+    public static void fechar(JFXButton btn, URL localizacao){
         Parent tela;
         try {
-            tela = FXMLLoader.load(classe.getClass().getResource("../layouts/telaInicial.fxml"));
+            tela = FXMLLoader.load(localizacao);
             Scene cena = btn.getScene();
             cena.setRoot(tela);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void mapearDoacao(DoacaoBean bean, Doacao doacao, String valorDoado, SimpleDateFormat sdf) {
+        try {
+            doacao.setDataDoacao(new Date(sdf.parse(bean.getDataDoacao()).getTime()));
+            doacao.setValorDoado(Double.parseDouble(valorDoado));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        doacao.setCpf(bean.getCpfBeneficiario());
+        doacao.setDataEntrada(new Date(System.currentTimeMillis()));
+        doacao.setInstituicaoDoadora(bean.getInstituicaoDoadora());
+        doacao.setNomeBeneficiario(bean.getNomeBeneficiario());
     }
 
 }

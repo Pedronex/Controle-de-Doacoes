@@ -3,15 +3,6 @@
     -fx-prompt-text-fill: #ffffffe5;
 }
 
-#tool-button{
-    -fx-background-color: #2c3030;
-    -fx-text-fill: #ffffff;
-}
-
-#tool-button:hover{
-    -fx-background-color: #3a4040;
-}
-
 #date-picker .button{
     -fx-background-color: #be4545;
     -fx-fill: #f5f5f5;
@@ -78,4 +69,19 @@
 .table-view > .virtual-flow > .scroll-bar > .increment-button,
 .table-view > .virtual-flow > .scroll-bar > .decrement-button {
     -fx-opacity: 0;
+}
+
+#tool-button{
+    -fx-background-color: #22222a;
+    -fx-text-fill: #ffffff;
+    -fx-hgap: 200px;
+    -fx-background-radius: 100px;
+    -fx-border-radius: 100px;
+    -fx-border-width: 2px;
+    -fx-border-color: #ec5353;
+    -fx-effect: dropshadow(three-pass-box, #ec5353, 10, 0, 0, 0);
+}
+
+#tool-button:hover{
+    -fx-background-color: #2a2a35;
 }

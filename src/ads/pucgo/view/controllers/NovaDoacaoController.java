@@ -12,10 +12,10 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 
 import java.net.URL;
 import java.sql.Date;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
@@ -42,41 +42,50 @@ public class NovaDoacaoController implements Initializable {
     @FXML
     private JFXButton btnProximo;
 
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        configurarCampos();
+        Alert sucesso = new Alert(Alert.AlertType.INFORMATION);
 
-        btnCancelar.setOnAction(event -> MetodosGenericos.fechar(btnCancelar,getClass()));
+        sucesso.setTitle("Sucesso!");
+        sucesso.setHeaderText("A gravação realizada");
+        configurarCampos();
+        btnCancelar.setOnAction(event ->
+                MetodosGenericos.fechar(btnCancelar,getClass().getResource("../layouts/telaInicial.fxml")));
 
         btnProximo.setOnAction(event -> {
             try {
                 DoacaoBean bean = setBean();
+                sucesso.setContentText("Gravação realizada com sucesso a data da doação é:\n" + bean.getDataDoacao()
+                        + " a data da entrada do dado é: " + sdf.format(new Date(System.currentTimeMillis())));
                 gravarDoacao(bean);
+                sucesso.showAndWait();
+                limparCampos();
             } catch (DoacaoException e) {
                 e.printStackTrace();
             }
         });
     }
 
+    private void limparCampos() {
+        inpCPF.setText("");
+        inpValorDoado.setText("");
+        inpInstituicao.setText("");
+        inpNomeBeneficiario.setText("");
+        inpDataDoacao.getEditor().setText("");
+    }
+
     private void gravarDoacao(DoacaoBean bean) throws DoacaoException {
         ServiceDoacao service = new ServiceDoacaoImpl();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Doacao doacao = new Doacao();
         String valorDoado = bean.getValorDoacao().replace(",", ".");
 
-        try {
-            doacao.setDataDoacao(new Date(sdf.parse(bean.getDataDoacao()).getTime()));
-            doacao.setValorDoado(Double.parseDouble(valorDoado));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        doacao.setCpf(bean.getCpfBeneficiario());
-        doacao.setDataEntrada(new Date(System.currentTimeMillis()));
-        doacao.setInstituicaoDoadora(bean.getInstituicaoDoadora());
-        doacao.setNomeBeneficiario(bean.getNomeBeneficiario());
+        MetodosGenericos.mapearDoacao(bean, doacao, valorDoado, sdf);
         service.criar(doacao);
     }
+
+
 
     private DoacaoBean setBean() throws DoacaoException {
         DoacaoBean bean = new DoacaoBean();
@@ -134,17 +143,20 @@ public class NovaDoacaoController implements Initializable {
 
     private void validarNome(JFXTextField field, String oldValue, String newValue) {
         if (newValue.length() == 0) {
-            if (!newValue.matches("[A-Z a-zÀ-Ÿà-ÿ]+") || oldValue.length() != 0)
+            if (!newValue.matches("[A-Z a-zÀ-Ÿà-ÿ]+") || oldValue.length() != 0) {
                 field.setText("");
-        } else if (!newValue.matches("[A-Z a-zÀ-Ÿà-ÿ]+") || newValue.length() > 50)
+            }
+        } else if (!newValue.matches("[A-Z a-zÀ-Ÿà-ÿ]+") || newValue.length() > 50) {
             field.setText(oldValue);
+        }
     }
 
     private void validarValor(JFXTextField field, String oldValue, String newValue) {
         if (newValue.length() == 0) {
             if (!newValue.matches("[0-9.,]+") || oldValue.length() != 0)
                 field.setText("");
-        } else if (!newValue.matches("[0-9.,]+") || newValue.length() > 50)
+        } else if (!newValue.matches("\n" +
+                "[0-9,]+") || newValue.length() > 50)
             field.setText(oldValue);
     }
 
