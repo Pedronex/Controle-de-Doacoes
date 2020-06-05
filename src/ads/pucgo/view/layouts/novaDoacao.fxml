@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="510.0" prefWidth="988.0" style="-fx-background-color: #262628;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ads.pucgo.view.controllers.NovaDoacaoController">
+<AnchorPane prefHeight="510.0" prefWidth="988.0" style="-fx-background-color: #262628;" xmlns="http://javafx.com/javafx/10.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ads.pucgo.view.controllers.NovaDoacaoController">
    <VBox layoutX="204.0" layoutY="65.0" prefHeight="380.0" prefWidth="580.0" style="-fx-background-color: #ffffff28; -fx-background-radius: 25; -fx-border-width: 3; -fx-border-radius: 25; -fx-border-color: #ff5656aa;">
       <AnchorPane prefHeight="294.0" prefWidth="574.0">
          <VBox layoutX="-3.0" layoutY="21.0" prefHeight="279.0" prefWidth="577.0">
