@@ -16,7 +16,9 @@ import javafx.scene.control.Alert;
 
 import java.net.URL;
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 
 public class NovaDoacaoController implements Initializable {
@@ -111,6 +113,21 @@ public class NovaDoacaoController implements Initializable {
         // Validações de valores
         if (!bean.getDataDoacao().matches("[0-3][0-9]/[0-1][0-9]/[0-9]+"))
             throw new DoacaoException("O campo data não entra no formato", "A data não está no formato **/**/****");
+        Calendar dataMinima = Calendar.getInstance();
+        dataMinima.set(1990, Calendar.JANUARY,1);
+        Date dataMaxima = new Date(System.currentTimeMillis());
+        Date dataConvertida;
+        try {
+            dataConvertida = new Date(sdf.parse(bean.getDataDoacao()).getTime());
+        } catch (ParseException e) {
+            throw new DoacaoException("Não foi possivel formatar a data","Tente inserir uma data valida");
+        }
+
+        if (dataConvertida.after(dataMaxima)){
+            throw new DoacaoException("Data não pode ser maior que a data atual","Tente insira uma doação antiga não no futuro");
+        }else if (dataConvertida.before(dataMinima.getTime())){
+            throw new DoacaoException("Data não pode ser menos que 01/01/1990","Tente inserir datas acima da data minima");
+        }
         return bean;
     }
 
@@ -155,8 +172,7 @@ public class NovaDoacaoController implements Initializable {
         if (newValue.length() == 0) {
             if (!newValue.matches("[0-9.,]+") || oldValue.length() != 0)
                 field.setText("");
-        } else if (!newValue.matches("\n" +
-                "[0-9,]+") || newValue.length() > 50)
+        } else if (!newValue.matches("[0-9,]+") || newValue.length() > 50)
             field.setText(oldValue);
     }
 

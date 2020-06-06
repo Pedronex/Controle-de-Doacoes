@@ -14,7 +14,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="626.0" prefWidth="982.0" xmlns="http://javafx.com/javafx/10.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ads.pucgo.view.controllers.PrincipalController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="626.0" prefWidth="982.0" xmlns="http://javafx.com/javafx/10.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ads.pucgo.view.controllers.PrincipalController">
     <HBox id="nav-bar" layoutX="-4.0" prefHeight="117.0" prefWidth="988.0" stylesheets="@../../resources/styles/style.css">
         <VBox prefHeight="197.0" prefWidth="988.0" style="-fx-background-color: #252529;">
             <Pane>
@@ -33,7 +33,7 @@
                 </HBox>
             </Pane>
             <HBox prefHeight="48.0" prefWidth="988.0">
-                <JFXButton fx:id="btnCriar" alignment="BASELINE_LEFT" graphicTextGap="10.0" prefHeight="56.0" prefWidth="252.0" stylesheets="@../../resources/styles/style.css" text="Registrar nova doação" textFill="WHITE">
+                <JFXButton fx:id="btnCriar" alignment="BASELINE_LEFT" graphicTextGap="10.0" prefHeight="46.0" prefWidth="329.0" stylesheets="@../../resources/styles/style.css" text="Registrar nova doação" textFill="WHITE">
                     <padding>
                         <Insets left="50.0" />
                     </padding>
@@ -53,7 +53,7 @@
                         <Font name="MS Outlook" size="13.0" />
                     </font>
                 </JFXButton>
-                <JFXButton fx:id="btnAtualizar" alignment="BASELINE_LEFT" graphicTextGap="10.0" prefHeight="56.0" prefWidth="252.0" stylesheets="@../../resources/styles/style.css" text="Atualizar uma doação" textFill="WHITE">
+                <JFXButton fx:id="btnAtualizar" alignment="BASELINE_LEFT" graphicTextGap="10.0" prefHeight="46.0" prefWidth="329.0" stylesheets="@../../resources/styles/style.css" text="Atualizar uma doação" textFill="WHITE">
                     <padding>
                         <Insets left="50.0" />
                     </padding>
@@ -73,27 +73,7 @@
                         <Font name="MS Outlook" size="13.0" />
                     </font>
                 </JFXButton>
-                <JFXButton fx:id="btnExcluir" alignment="BASELINE_LEFT" graphicTextGap="10.0" prefHeight="56.0" prefWidth="252.0" stylesheets="@../../resources/styles/style.css" text="Excluir uma doação" textFill="WHITE">
-                    <padding>
-                        <Insets left="50.0" />
-                    </padding>
-                    <graphic>
-                        <FontAwesomeIcon glyphName="MINUS" size="17">
-                            <fill>
-                                <LinearGradient endX="0.6285714285714286" startX="0.4" startY="1.0">
-                                    <stops>
-                                        <Stop color="#ff5e5e" />
-                                        <Stop color="#da0000" offset="1.0" />
-                                    </stops>
-                                </LinearGradient>
-                            </fill>
-                        </FontAwesomeIcon>
-                    </graphic>
-                    <font>
-                        <Font name="MS Outlook" size="13.0" />
-                    </font>
-                </JFXButton>
-                <JFXButton fx:id="btnConsultar" alignment="BASELINE_LEFT" graphicTextGap="10.0" prefHeight="56.0" prefWidth="252.0" stylesheets="@../../resources/styles/style.css" text="Consultar doação" textFill="WHITE">
+                <JFXButton fx:id="btnConsultar" alignment="BASELINE_LEFT" graphicTextGap="10.0" prefHeight="56.0" prefWidth="329.0" stylesheets="@../../resources/styles/style.css" text="Consultar doação" textFill="WHITE">
                     <padding>
                         <Insets left="50.0" />
                     </padding>

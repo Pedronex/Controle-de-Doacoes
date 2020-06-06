@@ -16,8 +16,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 import java.net.URL;
+import java.sql.Date;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 
 public class AlterarDoacaoController implements Initializable {
@@ -52,11 +55,16 @@ public class AlterarDoacaoController implements Initializable {
     @FXML
     public JFXDatePicker inpDataDoacao;
 
+    @FXML
+    private JFXButton btnDeletar;
+
     ServiceDoacao service = new ServiceDoacaoImpl();
     Doacao doacao;
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        MetodosGenericos.carregarTabela(tabelaDoacao,clCpf,clBeneficiario,clInstituicao,clValorDoado,clDataDoacao);
+        MetodosGenericos.carregarTabela(tabelaDoacao, clCpf, clBeneficiario, clInstituicao, clValorDoado, clDataDoacao);
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
         numberFormat.setMinimumFractionDigits(2);
         configuracaoTabela();
@@ -65,18 +73,28 @@ public class AlterarDoacaoController implements Initializable {
             try {
                 atualizarDoacao(setBean());
                 service.alterar(doacao);
-                MetodosGenericos.carregarTabela(tabelaDoacao,clCpf,clBeneficiario,clInstituicao,clValorDoado,clDataDoacao);
+                MetodosGenericos.carregarTabela(tabelaDoacao, clCpf, clBeneficiario, clInstituicao, clValorDoado, clDataDoacao);
             } catch (DoacaoException e) {
                 e.printStackTrace();
             }
         });
 
         btnCancelar.setOnAction(event ->
-                MetodosGenericos.fechar(btnCancelar,getClass().getResource("../layouts/telaInicial.fxml")));
+                MetodosGenericos.fechar(btnCancelar, getClass().getResource("../layouts/telaInicial.fxml")));
+
+        btnDeletar.setOnAction(event -> {
+            try {
+                atualizarDoacao(setBean());
+                service.deletar(doacao.getId());
+                MetodosGenericos.carregarTabela(tabelaDoacao, clCpf, clBeneficiario, clInstituicao, clValorDoado, clDataDoacao);
+                limparCampos();
+            } catch (DoacaoException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
-    private void configuracaoTabela(){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private void configuracaoTabela() {
         tabelaDoacao.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 try {
@@ -95,8 +113,17 @@ public class AlterarDoacaoController implements Initializable {
         });
     }
 
+    private void limparCampos() {
+        inpCpf.setText("");
+        inpNome.setText("");
+        inpValorDoado.setText("");
+        inpInstituicao.setText("");
+        inpId.setText("");
+        inpDataDoacao.getEditor().setText("");
+        inpDataBaixa.getEditor().setText("");
+    }
+
     private void atualizarDoacao(DoacaoBean bean) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         doacao = new Doacao();
         String valorDoado = bean.getValorDoacao().replace(",", ".");
 
@@ -126,9 +153,28 @@ public class AlterarDoacaoController implements Initializable {
         if (bean.getValorDoacao().isEmpty())
             bean.setValorDoacao("0");
         // Validações de valores
-        if (!bean.getDataDoacao().matches("[0-3][0-9]/[0-1][0-9]/[0-9]+"))
+        if (bean.getDataDoacao().matches("[0-3][0-9]/[0-1][0-9]/[0-9]+")) {
+            Calendar dataMinima = Calendar.getInstance();
+            dataMinima.set(1990, Calendar.JANUARY, 1);
+            Date dataMaxima = new Date(System.currentTimeMillis());
+            Date dataConvertida;
+            try {
+                dataConvertida = new Date(sdf.parse(bean.getDataDoacao()).getTime());
+            } catch (ParseException e) {
+                throw new DoacaoException("Não foi possivel formatar a data",
+                        "Tente inserir uma data valida");
+            }
+
+            if (dataConvertida.after(dataMaxima)) {
+                throw new DoacaoException("Data não pode ser maior que a data atual", "Tente inserir uma doação antiga não no futuro");
+            } else if (dataConvertida.before(dataMinima.getTime())) {
+                throw new DoacaoException("Data não pode ser menos que 01/01/1990", "Tente inserir datas acima da data minima");
+            }
+            return bean;
+        } else {
             throw new DoacaoException("O campo data não entra no formato", "A data não está no formato **/**/****");
-        return bean;
+        }
+
     }
 
     private void configurarCampos() {

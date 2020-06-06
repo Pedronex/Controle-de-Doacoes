@@ -82,6 +82,7 @@ public class ConsultarDoacaoController implements Initializable {
             } catch (DoacaoException e) {
                 e.printStackTrace();
             }
+            btnConsultar.setFocusTraversable(false);
         });
     }
 
@@ -94,21 +95,19 @@ public class ConsultarDoacaoController implements Initializable {
             if (inpId.getText().equals(doacao.getId().toString())){
                 beans.add(setBean(doacao));
             }
-            if (inpCpf.getText().contains(doacao.getCpf())){
+            if (inpCpf.getText().equalsIgnoreCase(doacao.getCpf())){
                 beans.add(setBean(doacao));
             }
             if (inpDataDoacao.getEditor().getText().equals(sdf.format(doacao.getDataDoacao()))){
                 beans.add(setBean(doacao));
             }
-            if (inpNome.getText().contains(doacao.getNomeBeneficiario())){
+            if (inpNome.getText().equalsIgnoreCase(doacao.getNomeBeneficiario())){
                 beans.add(setBean(doacao));
             }
-            if (inpInstituicao.getText().contains(doacao.getInstituicaoDoadora())) {
+            if (inpInstituicao.getText().equalsIgnoreCase(doacao.getInstituicaoDoadora())) {
                 beans.add(setBean(doacao));
             }
         }
-
-
         return removerDuplicatas(beans);
     }
 
