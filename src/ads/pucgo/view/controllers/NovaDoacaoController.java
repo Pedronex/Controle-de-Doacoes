@@ -21,6 +21,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
+/**
+ * Classe controladora da tela de criação de novas doações
+ *
+ * @author Pedro Soares
+ */
 public class NovaDoacaoController implements Initializable {
 
     @FXML
@@ -54,7 +59,7 @@ public class NovaDoacaoController implements Initializable {
         sucesso.setHeaderText("A gravação realizada");
         configurarCampos();
         btnCancelar.setOnAction(event ->
-                MetodosGenericos.fechar(btnCancelar,getClass().getResource("../layouts/telaInicial.fxml")));
+                MetodosGenericos.fechar(btnCancelar, getClass().getResource("../layouts/telaInicial.fxml")));
 
         btnProximo.setOnAction(event -> {
             try {
@@ -80,16 +85,14 @@ public class NovaDoacaoController implements Initializable {
 
     private void gravarDoacao(DoacaoBean bean) throws DoacaoException {
         ServiceDoacao service = new ServiceDoacaoImpl();
-        Doacao doacao = new Doacao();
-        String valorDoado = bean.getValorDoacao().replace(",", ".");
-
-        MetodosGenericos.mapearDoacao(bean, doacao, valorDoado, sdf);
+        Doacao doacao;
+        doacao = MetodosGenericos.mapearDoacao(bean);
         service.criar(doacao);
     }
 
 
-
     private DoacaoBean setBean() throws DoacaoException {
+        // Gravando no objeto bean todos os dados capturados do formulário
         DoacaoBean bean = new DoacaoBean();
         bean.setCpfBeneficiario(inpCPF.getText());
         bean.setNomeBeneficiario(inpNomeBeneficiario.getText());
@@ -110,23 +113,21 @@ public class NovaDoacaoController implements Initializable {
             bean.setValorDoacao("0");
 
         inpValorDoado.setText("0");
-        // Validações de valores
-        if (!bean.getDataDoacao().matches("[0-3][0-9]/[0-1][0-9]/[0-9]+"))
-            throw new DoacaoException("O campo data não entra no formato", "A data não está no formato **/**/****");
+
         Calendar dataMinima = Calendar.getInstance();
-        dataMinima.set(1990, Calendar.JANUARY,1);
+        dataMinima.set(1990, Calendar.JANUARY, 1);
         Date dataMaxima = new Date(System.currentTimeMillis());
         Date dataConvertida;
         try {
             dataConvertida = new Date(sdf.parse(bean.getDataDoacao()).getTime());
         } catch (ParseException e) {
-            throw new DoacaoException("Não foi possivel formatar a data","Tente inserir uma data valida");
+            throw new DoacaoException("Não foi possivel formatar a data", "Tente inserir uma data valida");
         }
 
-        if (dataConvertida.after(dataMaxima)){
-            throw new DoacaoException("Data não pode ser maior que a data atual","Tente insira uma doação antiga não no futuro");
-        }else if (dataConvertida.before(dataMinima.getTime())){
-            throw new DoacaoException("Data não pode ser menos que 01/01/1990","Tente inserir datas acima da data minima");
+        if (dataConvertida.after(dataMaxima)) {
+            throw new DoacaoException("Data não pode ser maior que a data atual", "Tente insira uma doação antiga não no futuro");
+        } else if (dataConvertida.before(dataMinima.getTime())) {
+            throw new DoacaoException("Data não pode ser menos que 01/01/1990", "Tente inserir datas acima da data minima");
         }
         return bean;
     }
@@ -158,6 +159,13 @@ public class NovaDoacaoController implements Initializable {
                 validarCPF(inpCPF, oldValue, newValue));
     }
 
+    /**
+     * Método para validar os campos que contenham uma caracteristica de nome
+     *
+     * @param field    campo que será validado
+     * @param oldValue estado antigo do campo do tipo texto (String)
+     * @param newValue estado atual do campo do tipo texto (String)
+     */
     private void validarNome(JFXTextField field, String oldValue, String newValue) {
         if (newValue.length() == 0) {
             if (!newValue.matches("[A-Z a-zÀ-Ÿà-ÿ]+") || oldValue.length() != 0) {
@@ -168,14 +176,31 @@ public class NovaDoacaoController implements Initializable {
         }
     }
 
+    /**
+     * Método para validar os campos que contenham uma caracteristica de valor decimal
+     *
+     * @param field    campo que será validado
+     * @param oldValue estado antigo do campo do tipo texto (String)
+     * @param newValue estado atual do campo do tipo texto (String)
+     */
     private void validarValor(JFXTextField field, String oldValue, String newValue) {
         if (newValue.length() == 0) {
             if (!newValue.matches("[0-9.,]+") || oldValue.length() != 0)
                 field.setText("");
-        } else if (!newValue.matches("[0-9,]+") || newValue.length() > 50)
+        } else if (!newValue.matches("[0-9,.]+") || newValue.length() > 9) {
             field.setText(oldValue);
+        } else if (newValue.matches("[0-9]+[,.][,.]")) {
+            field.setText(oldValue);
+        }
     }
 
+    /**
+     * Método para validar os campos que contenham uma caracteristica de CPF
+     *
+     * @param field    campo que será validado
+     * @param oldValue estado antigo do campo do tipo texto (String)
+     * @param newValue estado atual do campo do tipo texto (String)
+     */
     private void validarCPF(JFXTextField field, String oldValue, String newValue) {
         if (newValue.length() == 0) {
             if (!newValue.matches("[0-9.\\-]+") || oldValue.length() != 0)

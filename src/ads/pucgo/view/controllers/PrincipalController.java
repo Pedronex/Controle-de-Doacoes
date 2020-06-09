@@ -11,6 +11,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Classe Controladora da tela principal da aplicação
+ * @author Pedro Soares
+ */
 public class PrincipalController implements Initializable {
 
     @FXML
@@ -20,21 +24,17 @@ public class PrincipalController implements Initializable {
     private JFXButton btnAtualizar;
 
     @FXML
-    private JFXButton btnExcluir;
-
-    @FXML
     private JFXButton btnConsultar;
 
     @FXML
     private Pane principalPane;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        btnCriar.setFocusTraversable(false);
-        btnAtualizar.setFocusTraversable(false);
-        btnConsultar.setFocusTraversable(false);
-        btnExcluir.setFocusTraversable(false);
+    public void initialize(URL location, ResourceBundle resources){
+        // Chamada do método que retira o foco nos botões
+        removerFoco();
 
+        // Chamada do método que chama a tela de criação
         btnCriar.setOnAction(event -> {
             try {
                 chamarTela("novaDoacao");
@@ -43,6 +43,7 @@ public class PrincipalController implements Initializable {
             }
         });
 
+        // Chamada do método que chama a tela de consulta
         btnConsultar.setOnAction(event -> {
             try {
                 chamarTela("consultarDoacao");
@@ -51,6 +52,7 @@ public class PrincipalController implements Initializable {
             }
         });
 
+        // Chamada do método que chama a tela de consulta
         btnAtualizar.setOnAction(event -> {
             try {
                 chamarTela("alterarDoacao");
@@ -58,18 +60,24 @@ public class PrincipalController implements Initializable {
                 e.printStackTrace();
             }
         });
-
-        btnExcluir.setOnAction(event -> {
-            try {
-                chamarTela("deletarDoacao");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
     }
 
+    /**
+     * Método para chamar a tela
+     * @param nomeTela uma String com o nome da tela que será chamada
+     * @throws IOException exceção que está na assinatura do método load do FXMLLoader
+     */
     private void chamarTela(String nomeTela) throws IOException {
         Parent tela = FXMLLoader.load(getClass().getResource("../layouts/" + nomeTela + ".fxml"));
         principalPane.getChildren().setAll(tela);
+    }
+
+    /**
+     * Método para remover o foco dos botões
+     */
+    private void removerFoco(){
+        btnCriar.setFocusTraversable(false);
+        btnAtualizar.setFocusTraversable(false);
+        btnConsultar.setFocusTraversable(false);
     }
 }
