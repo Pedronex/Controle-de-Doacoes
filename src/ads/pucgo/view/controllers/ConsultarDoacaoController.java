@@ -36,6 +36,9 @@ public class ConsultarDoacaoController implements Initializable {
     private TableView<DoacaoBean> tabelaDoacao;
 
     @FXML
+    private TableColumn<DoacaoBean, Integer> clId;
+
+    @FXML
     private TableColumn<DoacaoBean, String> clCpf;
 
     @FXML
@@ -110,11 +113,11 @@ public class ConsultarDoacaoController implements Initializable {
                 bean.setValorDoacao(numberFormat.format(item.getValorDoado()));
                 bean.setDataDoacao(sdf.format(item.getDataDoacao()));
                 bean.setInstituicaoDoadora(item.getInstituicaoDoadora());
-                bean.setDataEntrada(sdf.format(item.getDataEntrada()));
                 lista.add(bean);
             }
             if (!lista.isEmpty()) {
                 tabelaDoacao.setItems(lista);
+                clId.setCellValueFactory(new PropertyValueFactory<>("id"));
                 clCpf.setCellValueFactory(new PropertyValueFactory<>("cpfBeneficiario"));
                 clBeneficiario.setCellValueFactory(new PropertyValueFactory<>("nomeBeneficiario"));
                 clDataDoacao.setCellValueFactory(new PropertyValueFactory<>("dataDoacao"));
@@ -193,7 +196,6 @@ public class ConsultarDoacaoController implements Initializable {
         DoacaoBean bean = new DoacaoBean();
         bean.setId(doacao.getId());
         bean.setCpfBeneficiario(doacao.getCpf());
-        bean.setDataEntrada(sdf.format(doacao.getDataEntrada()));
         bean.setInstituicaoDoadora(doacao.getInstituicaoDoadora());
         bean.setDataDoacao(sdf.format(doacao.getDataDoacao()));
         bean.setValorDoacao(numberFormat.format(doacao.getValorDoado()));

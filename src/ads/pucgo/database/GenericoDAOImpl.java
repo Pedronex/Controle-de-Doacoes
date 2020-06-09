@@ -164,6 +164,7 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
         try {
             statement = transacaoDB.createStatement();
             statement.execute(sqlBuilder.toString());
+            statement.execute("ALTER TABLE " + getNomeTabela() + " AUTO_INCREMENT=0");
         } catch (Exception e) {
             throw new BancoExcetion(e);
         } finally {
@@ -326,8 +327,7 @@ public class GenericoDAOImpl<T, ID extends Serializable> implements GenericoDAO<
                 Object value = resultSet.getObject(coluna.nomeColuna());
                 Class<?> type = field.getType();
                 if (isPrimitive(type)) {
-                    Class<?> boxed = mapPrimitiveClass(type);
-                    value = boxed.cast(value);
+                    mapPrimitiveClass(type);
                 }
                 field.set(object,value);
             }

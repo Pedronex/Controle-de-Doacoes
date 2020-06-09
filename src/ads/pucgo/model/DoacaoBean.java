@@ -8,15 +8,6 @@ public class DoacaoBean {
     private String dataDoacao;
     private String instituicaoDoadora;
     private String valorDoacao;
-    private String dataEntrada;
-
-    public String getDataEntrada() {
-        return dataEntrada;
-    }
-
-    public void setDataEntrada(String dataEntrada) {
-        this.dataEntrada = dataEntrada;
-    }
 
     public String getCpfBeneficiario() {
         return cpfBeneficiario;

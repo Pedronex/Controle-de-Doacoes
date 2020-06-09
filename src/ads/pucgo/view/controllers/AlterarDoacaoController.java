@@ -125,7 +125,6 @@ public class AlterarDoacaoController implements Initializable {
                 bean.setValorDoacao(numberFormat.format(item.getValorDoado()));
                 bean.setDataDoacao(sdf.format(item.getDataDoacao()));
                 bean.setInstituicaoDoadora(item.getInstituicaoDoadora());
-                bean.setDataEntrada(sdf.format(item.getDataEntrada()));
                 lista.add(bean);
             }
             if (!lista.isEmpty()) {
