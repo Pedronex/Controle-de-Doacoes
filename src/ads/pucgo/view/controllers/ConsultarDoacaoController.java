@@ -21,7 +21,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Classe controladora da tela de consulta

@@ -1,10 +1,9 @@
 package ads.pucgo.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-
 import ads.pucgo.util.BancoExcetion;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
